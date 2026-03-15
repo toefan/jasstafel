@@ -506,6 +506,101 @@
       color: var(--gold-light);
     }
 
+    /* ── WEISE ── */
+    .weise-section {
+      margin-bottom: 12px;
+    }
+
+    .weise-header {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold-dim);
+      margin-bottom: 6px;
+    }
+
+    .weise-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .weise-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .weise-col-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold-dim);
+      text-align: center;
+    }
+
+    .weise-list {
+      min-height: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .weise-tag {
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 0.9rem;
+      color: var(--gold-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .weise-tag:active { background: rgba(192,57,43,0.25); border-color: var(--red-light); color: var(--red-light); }
+
+    .weise-input-row {
+      display: flex;
+      gap: 5px;
+    }
+
+    .weise-input {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 7px;
+      padding: 7px 8px;
+      color: var(--white);
+      font-family: 'Crimson Pro', serif;
+      font-size: 1rem;
+      width: 100%;
+      outline: none;
+      text-align: center;
+      -webkit-appearance: none;
+    }
+
+    .weise-input:focus { border-color: var(--gold); }
+
+    .weise-add-btn {
+      background: rgba(201,168,76,0.2);
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 7px;
+      padding: 7px 12px;
+      color: var(--gold-light);
+      font-size: 1.2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .weise-add-btn:active { background: rgba(201,168,76,0.4); }
+
+    .round-weise {
+      font-size: 0.8rem;
+      color: var(--gold-dim);
+    }
+
     .add-round-btn {
       background: linear-gradient(135deg, #1c4a30, #2d6b45);
       border: 1px solid rgba(201,168,76,0.3);
@@ -794,6 +889,28 @@
         <button class="factor-btn" data-factor="4" onclick="selectFactor(this)">4×</button>
       </div>
 
+      <div class="weise-section">
+        <div class="weise-header">Weise</div>
+        <div class="weise-cols">
+          <div class="weise-col">
+            <div class="weise-col-label" id="weise-t1-label">Team 1</div>
+            <div class="weise-list" id="weise-list-1"></div>
+            <div class="weise-input-row">
+              <input class="weise-input" id="weise-input-1" type="number" inputmode="numeric" placeholder="Pkt">
+              <button class="weise-add-btn" onclick="addWeise(1)">+</button>
+            </div>
+          </div>
+          <div class="weise-col">
+            <div class="weise-col-label" id="weise-t2-label">Team 2</div>
+            <div class="weise-list" id="weise-list-2"></div>
+            <div class="weise-input-row">
+              <input class="weise-input" id="weise-input-2" type="number" inputmode="numeric" placeholder="Pkt">
+              <button class="weise-add-btn" onclick="addWeise(2)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="match-row">
         <button class="match-btn" id="match1-btn" onclick="toggleMatch(1)">
           <span class="match-icon">💥</span>
@@ -855,9 +972,11 @@
     team1: 'Team 1',
     team2: 'Team 2',
     target: 2500,
-    scores: [], // [{s1, s2, match1, match2, factor}]
-    matchTeam: 0, // 0 = none, 1 = team1, 2 = team2
-    currentFactor: 1
+    scores: [], // [{s1, s2, match1, match2, factor, weisen1[], weisen2[]}]
+    matchTeam: 0,
+    currentFactor: 1,
+    currentWeisen1: [],
+    currentWeisen2: []
   };
 
   // Load saved state
@@ -891,6 +1010,45 @@
     state.currentFactor = parseInt(btn.dataset.factor);
   }
 
+  function addWeise(team) {
+    const input = document.getElementById(`weise-input-${team}`);
+    const val = parseInt(input.value);
+    if (isNaN(val) || val <= 0) return;
+    if (team === 1) state.currentWeisen1.push(val);
+    else state.currentWeisen2.push(val);
+    input.value = '';
+    renderWeisen();
+  }
+
+  function removeWeise(team, index) {
+    if (team === 1) state.currentWeisen1.splice(index, 1);
+    else state.currentWeisen2.splice(index, 1);
+    renderWeisen();
+  }
+
+  function renderWeisen() {
+    [1, 2].forEach(team => {
+      const list = document.getElementById(`weise-list-${team}`);
+      const weisen = team === 1 ? state.currentWeisen1 : state.currentWeisen2;
+      list.innerHTML = '';
+      weisen.forEach((w, i) => {
+        const tag = document.createElement('span');
+        tag.className = 'weise-tag';
+        tag.innerHTML = `${w} <small>✕</small>`;
+        tag.onclick = () => removeWeise(team, i);
+        list.appendChild(tag);
+      });
+    });
+  }
+
+  function resetWeisen() {
+    state.currentWeisen1 = [];
+    state.currentWeisen2 = [];
+    document.getElementById('weise-input-1').value = '';
+    document.getElementById('weise-input-2').value = '';
+    renderWeisen();
+  }
+
   function selectTarget(btn) {
     document.querySelectorAll('.target-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
@@ -912,6 +1070,8 @@
     document.getElementById('t2-name').textContent = state.team2;
     document.getElementById('t1-label').textContent = state.team1;
     document.getElementById('t2-label').textContent = state.team2;
+    document.getElementById('weise-t1-label').textContent = state.team1;
+    document.getElementById('weise-t2-label').textContent = state.team2;
 
     if (state.target > 0) {
       document.getElementById('target-display').textContent = `Ziel: ${state.target} Punkte · ${state.mode.charAt(0).toUpperCase() + state.mode.slice(1)}`;
@@ -943,7 +1103,9 @@
     return state.scores.reduce((sum, r) => {
       const factor = r.factor || 1;
       const base = team === 1 ? r.s1 : r.s2;
-      return sum + base * factor;
+      const weisen = team === 1 ? (r.weisen1 || []) : (r.weisen2 || []);
+      const weisSum = weisen.reduce((a, b) => a + b, 0);
+      return sum + (base + weisSum) * factor;
     }, 0);
   }
 
@@ -974,11 +1136,13 @@
 
       const s1El = document.createElement('div');
       s1El.className = 'round-score' + (r.s1 > r.s2 ? ' highlight' : '') + (r.match1 ? ' match-bonus' : '');
-      s1El.textContent = r.match1 ? `${r.s1} 💥` : r.s1;
+      const w1 = (r.weisen1 || []);
+      s1El.textContent = r.s1 + (w1.length ? ` (${w1.join('+')})` : '');
 
       const s2El = document.createElement('div');
       s2El.className = 'round-score' + (r.s2 > r.s1 ? ' highlight' : '') + (r.match2 ? ' match-bonus' : '');
-      s2El.textContent = r.match2 ? `${r.s2} 💥` : r.s2;
+      const w2 = (r.weisen2 || []);
+      s2El.textContent = r.s2 + (w2.length ? ` (${w2.join('+')})` : '');
 
       row.appendChild(numEl);
       row.appendChild(s1El);
@@ -1044,7 +1208,9 @@
       s1, s2,
       match1: state.matchTeam === 1,
       match2: state.matchTeam === 2,
-      factor: state.currentFactor || 1
+      factor: state.currentFactor || 1,
+      weisen1: [...state.currentWeisen1],
+      weisen2: [...state.currentWeisen2]
     };
 
     state.scores.push(round);
@@ -1057,6 +1223,7 @@
     document.getElementById('match2-btn').classList.remove('active');
     document.querySelectorAll('.factor-btn').forEach(b => b.classList.remove('selected'));
     document.querySelector('.factor-btn[data-factor="1"]').classList.add('selected');
+    resetWeisen();
 
     renderGame();
     saveState();
@@ -1120,14 +1287,15 @@
   // ── SERVICE WORKER + VERSION ──
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').then(() => {
-      // Read version from cache name (e.g. "jasstafel-v1.2" → "v1.2")
-      caches.keys().then(keys => {
-        const jassCache = keys.find(k => k.startsWith('jasstafel-'));
-        if (jassCache) {
-          const version = jassCache.replace('jasstafel-', '');
-          document.getElementById('app-version').textContent = `(${version})`;
-        }
-      });
+      // Fetch sw.js and extract VERSION string directly
+      fetch('sw.js?nocache=' + Date.now())
+        .then(r => r.text())
+        .then(text => {
+          const match = text.match(/const VERSION\s*=\s*'([^']+)'/);
+          if (match) {
+            document.getElementById('app-version').textContent = `(${match[1]})`;
+          }
+        });
     });
   }
 </script>
