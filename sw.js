@@ -1,4 +1,4 @@
-const VERSION = 'v0.1';
+const VERSION = 'v0.2';
 const CACHE = `jasstafel-${VERSION}`;
 const ASSETS = [
   './',

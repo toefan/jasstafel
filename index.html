@@ -346,14 +346,6 @@
 
     .weise-col { display: flex; flex-direction: column; gap: 4px; }
 
-    .weise-col-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--gold-dim);
-      text-align: center;
-    }
-
     .weise-list {
       min-height: 22px;
       display: flex;
@@ -944,7 +936,7 @@
 <body>
 <div class="app">
   <header>
-    <div class="logo">Jass<span>tafel</span> <small id="app-version"></small></div>
+    <div class="logo">Fankis Jasstafel <small id="app-version"></small></div>
   </header>
 
   <div id="install-banner">
@@ -1000,7 +992,7 @@
       <button class="molotov-add-player-btn" onclick="addMolotovPlayerField()">+ Spieler hinzufügen</button>
     </div>
 
-    <button class="start-btn" onclick="startGame()">Spiel starten ♠</button>
+    <button class="start-btn" onclick="startGame()">Spiel starten</button>
     <button class="resume-btn" id="resume-btn" onclick="resumeGame()" style="display:none">↩ Zum laufenden Spiel zurück</button>
   </div>
 
@@ -1033,7 +1025,6 @@
         <div class="weise-header">Weise</div>
         <div class="weise-cols">
           <div class="weise-col">
-            <div class="weise-col-label" id="weise-t1-label">Team 1</div>
             <div class="weise-list" id="weise-list-1"></div>
             <div class="weise-input-row">
               <input class="weise-input" id="weise-input-1" type="number" inputmode="numeric" placeholder="Pkt">
@@ -1041,7 +1032,6 @@
             </div>
           </div>
           <div class="weise-col">
-            <div class="weise-col-label" id="weise-t2-label">Team 2</div>
             <div class="weise-list" id="weise-list-2"></div>
             <div class="weise-input-row">
               <input class="weise-input" id="weise-input-2" type="number" inputmode="numeric" placeholder="Pkt">
