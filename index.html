@@ -236,6 +236,25 @@
       box-shadow: 0 2px 10px rgba(201,168,76,0.2);
     }
 
+    .resume-btn {
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: var(--radius);
+      padding: 14px;
+      color: var(--cream-dim);
+      font-family: 'Crimson Pro', serif;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .resume-btn:active {
+      background: rgba(201,168,76,0.1);
+      color: var(--cream);
+    }
+
     /* ── GAME SCREEN ── */
     #game-screen { display: none; }
 
@@ -748,6 +767,7 @@
     </div>
 
     <button class="start-btn" onclick="startGame()">Spiel starten ♠</button>
+    <button class="resume-btn" id="resume-btn" onclick="resumeGame()" style="display:none">↩ Zum laufenden Spiel zurück</button>
   </div>
 
   <!-- GAME SCREEN -->
@@ -818,13 +838,9 @@
         <span class="icon">↩️</span>
         Rückgängig
       </button>
-      <button class="action-btn" onclick="showResetModal()">
+      <button class="action-btn" onclick="showSetup()">
         <span class="icon">🔄</span>
         Neues Spiel
-      </button>
-      <button class="action-btn" onclick="showSetup()">
-        <span class="icon">⚙️</span>
-        Einstellungen
       </button>
     </div>
   </div>
@@ -841,17 +857,7 @@
   </div>
 </div>
 
-<!-- Reset Modal -->
-<div class="modal-overlay" id="reset-modal">
-  <div class="modal">
-    <h3>Neues Spiel?</h3>
-    <p>Der aktuelle Spielstand wird gelöscht. Wirklich neu starten?</p>
-    <div class="modal-btns">
-      <button class="modal-cancel" onclick="closeModal()">Abbrechen</button>
-      <button class="modal-confirm" onclick="confirmReset()">Ja, neu starten</button>
-    </div>
-  </div>
-</div>
+
 
 <script>
   // ── STATE ──
@@ -931,6 +937,14 @@
     document.getElementById('setup-screen').style.display = 'flex';
     document.getElementById('team1-name').value = state.team1;
     document.getElementById('team2-name').value = state.team2;
+    // Show "Zurück zum Spiel" only if a game is running
+    const hasGame = state.scores && state.scores.length > 0;
+    document.getElementById('resume-btn').style.display = hasGame ? 'block' : 'none';
+  }
+
+  function resumeGame() {
+    document.getElementById('setup-screen').style.display = 'none';
+    document.getElementById('game-screen').style.display = 'block';
   }
 
   // ── GAME LOGIC ──
@@ -1091,20 +1105,12 @@
     document.getElementById('win-overlay').classList.remove('show');
   }
 
-  function showResetModal() {
-    document.getElementById('reset-modal').classList.add('show');
-  }
-
-  function closeModal() {
-    document.getElementById('reset-modal').classList.remove('show');
-  }
-
   function confirmReset() {
-    closeModal();
     state.scores = [];
     state.matchTeam = 0;
-    renderGame();
+    state.currentFactor = 1;
     saveState();
+    startGame(false);
   }
 
   // ── PWA INSTALL ──
