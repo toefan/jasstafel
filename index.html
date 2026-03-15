@@ -12,17 +12,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f0c07;
+      --bg: #080604;
       --felt: #1c3a2a;
       --felt-light: #224533;
-      --gold: #c9a84c;
-      --gold-light: #e8c96a;
-      --gold-dim: #7a6230;
-      --cream: #f0e6c8;
-      --cream-dim: #9a8e72;
+      --gold: #d4a843;
+      --gold-light: #f0c84a;
+      --gold-dim: #8a6e28;
+      --cream: #ffffff;
+      --cream-dim: #b8a888;
       --red: #c0392b;
-      --red-light: #e74c3c;
-      --white: #fff9f0;
+      --red-light: #ff5a47;
+      --white: #ffffff;
       --shadow: rgba(0,0,0,0.6);
       --radius: 16px;
     }
@@ -33,7 +33,7 @@
       background: var(--bg);
       color: var(--cream);
       font-family: 'Crimson Pro', Georgia, serif;
-      font-size: 18px;
+      font-size: 20px;
       min-height: 100vh;
       min-height: -webkit-fill-available;
       overflow-x: hidden;
@@ -78,8 +78,8 @@
 
     .logo {
       font-family: 'Playfair Display', serif;
-      font-size: 2.6rem;
-      font-weight: 900;
+      font-size: 1.4rem;
+      font-weight: 700;
       color: var(--gold-light);
       letter-spacing: 0.04em;
       text-shadow: 0 2px 12px rgba(201,168,76,0.4);
@@ -704,9 +704,7 @@
 <body>
 <div class="app">
   <header>
-    <div class="logo">Fankis Jasstafel <small id="app-version" style="font-size:0.28em;font-weight:400;color:var(--cream-dim);vertical-align:middle;"></small></div>
-    <div class="subtitle">Schweizer Kartenspiel</div>
-    <div class="suits">♠ ♥ ♦ ♣</div>
+    <div class="logo">Jass<span>tafel</span> <small id="app-version" style="font-size:0.75em;font-weight:400;color:var(--cream-dim);vertical-align:middle;"></small></div>
   </header>
 
   <div id="install-banner">
@@ -760,9 +758,9 @@
       <h3>Ziel (Punkte)</h3>
       <div class="target-options">
         <button class="target-btn" data-target="1000" onclick="selectTarget(this)">1000</button>
-        <button class="target-btn selected" data-target="1500" onclick="selectTarget(this)">1500</button>
+        <button class="target-btn" data-target="1500" onclick="selectTarget(this)">1500</button>
         <button class="target-btn" data-target="2000" onclick="selectTarget(this)">2000</button>
-        <button class="target-btn" data-target="2500" onclick="selectTarget(this)">2500</button>
+        <button class="target-btn selected" data-target="2500" onclick="selectTarget(this)">2500</button>
         <button class="target-btn" data-target="0" onclick="selectTarget(this)">Kein Ziel</button>
       </div>
     </div>
@@ -775,41 +773,17 @@
   <div id="game-screen">
     <div class="score-target" id="target-display"></div>
 
-    <div class="scoreboard">
-      <div class="scoreboard-header">
-        <div class="team-header">
-          <div class="team-name" id="t1-name">Team 1</div>
-          <div class="team-total" id="t1-total">0</div>
-          <div class="progress-bar-wrap"><div class="progress-bar" id="t1-bar" style="width:0%"></div></div>
-        </div>
-        <div class="team-header">
-          <div class="team-name" id="t2-name">Team 2</div>
-          <div class="team-total" id="t2-total">0</div>
-          <div class="progress-bar-wrap"><div class="progress-bar" id="t2-bar" style="width:0%"></div></div>
-        </div>
-      </div>
-      <div class="rounds-wrap" id="rounds-list"></div>
-    </div>
-
     <div class="entry-panel">
       <h3>Runde eintragen</h3>
       <div class="entry-row">
         <div class="entry-group">
           <label id="t1-label">Team 1</label>
-          <input class="score-input" id="score1" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="0" min="0" max="157" oninput="autoBalance(1)">
+          <input class="score-input" id="score1" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="0" min="0" max="257" oninput="autoBalance(1)">
         </div>
         <div class="entry-group">
           <label id="t2-label">Team 2</label>
-          <input class="score-input" id="score2" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="0" min="0" max="157" oninput="autoBalance(2)">
+          <input class="score-input" id="score2" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="0" min="0" max="257" oninput="autoBalance(2)">
         </div>
-      </div>
-
-      <div class="quick-btns">
-        <span style="font-size:0.72rem;color:var(--gold-dim);text-transform:uppercase;letter-spacing:.1em;align-self:center;">Schnell:</span>
-        <button class="quick-btn" onclick="setScore(1, 157)">157 ▸ 0</button>
-        <button class="quick-btn" onclick="setScore(2, 157)">0 ◂ 157</button>
-        <button class="quick-btn" onclick="setScore(1, 100)">100/57</button>
-        <button class="quick-btn" onclick="setScore(1, 77)">77/80</button>
       </div>
 
       <div class="factor-row">
@@ -832,6 +806,20 @@
       </div>
 
       <button class="add-round-btn" onclick="addRound()">✓ Runde speichern</button>
+    </div>
+
+    <div class="scoreboard">
+      <div class="scoreboard-header">
+        <div class="team-header">
+          <div class="team-name" id="t1-name">Team 1</div>
+          <div class="team-total" id="t1-total">0</div>
+        </div>
+        <div class="team-header">
+          <div class="team-name" id="t2-name">Team 2</div>
+          <div class="team-total" id="t2-total">0</div>
+        </div>
+      </div>
+      <div class="rounds-wrap" id="rounds-list"></div>
     </div>
 
     <div class="bottom-actions">
@@ -866,7 +854,7 @@
     mode: 'schieber',
     team1: 'Team 1',
     team2: 'Team 2',
-    target: 1500,
+    target: 2500,
     scores: [], // [{s1, s2, match1, match2, factor}]
     matchTeam: 0, // 0 = none, 1 = team1, 2 = team2
     currentFactor: 1
@@ -955,8 +943,7 @@
     return state.scores.reduce((sum, r) => {
       const factor = r.factor || 1;
       const base = team === 1 ? r.s1 : r.s2;
-      const matchBonus = r.match1 && team === 1 ? 100 : (r.match2 && team === 2 ? 100 : 0);
-      return sum + (base + matchBonus) * factor;
+      return sum + base * factor;
     }, 0);
   }
 
@@ -972,16 +959,6 @@
     const t2El = document.getElementById('t2-total');
     t1El.className = 'team-total' + (t1 > t2 ? ' winning' : t1 < t2 ? ' losing' : '');
     t2El.className = 'team-total' + (t2 > t1 ? ' winning' : t2 < t1 ? ' losing' : '');
-
-    // Progress bars
-    if (state.target > 0) {
-      document.getElementById('t1-bar').style.width = Math.min(100, t1 / state.target * 100) + '%';
-      document.getElementById('t2-bar').style.width = Math.min(100, t2 / state.target * 100) + '%';
-    } else {
-      const max = Math.max(t1, t2, 1);
-      document.getElementById('t1-bar').style.width = (t1 / max * 100) + '%';
-      document.getElementById('t2-bar').style.width = (t2 / max * 100) + '%';
-    }
 
     // Rounds list
     const list = document.getElementById('rounds-list');
@@ -1013,13 +990,13 @@
   function autoBalance(changed) {
     if (changed === 1) {
       const s1 = parseInt(document.getElementById('score1').value);
-      if (!isNaN(s1) && s1 >= 0 && s1 <= 157) {
-        document.getElementById('score2').value = 157 - s1;
+      if (!isNaN(s1) && s1 >= 0) {
+        document.getElementById('score2').value = s1 > 157 ? 0 : 157 - s1;
       }
     } else {
       const s2 = parseInt(document.getElementById('score2').value);
-      if (!isNaN(s2) && s2 >= 0 && s2 <= 157) {
-        document.getElementById('score1').value = 157 - s2;
+      if (!isNaN(s2) && s2 >= 0) {
+        document.getElementById('score1').value = s2 > 157 ? 0 : 157 - s2;
       }
     }
   }
@@ -1027,10 +1004,10 @@
   function setScore(winTeam, pts) {
     if (winTeam === 1) {
       document.getElementById('score1').value = pts;
-      document.getElementById('score2').value = 157 - pts;
+      document.getElementById('score2').value = pts > 157 ? 0 : 157 - pts;
     } else {
       document.getElementById('score2').value = pts;
-      document.getElementById('score1').value = 157 - pts;
+      document.getElementById('score1').value = pts > 157 ? 0 : 157 - pts;
     }
     state.matchTeam = 0;
     document.getElementById('match1-btn').classList.remove('active');
@@ -1040,11 +1017,17 @@
   function toggleMatch(team) {
     if (state.matchTeam === team) {
       state.matchTeam = 0;
+      document.getElementById('score1').value = '';
+      document.getElementById('score2').value = '';
     } else {
       state.matchTeam = team;
-      // If match, winning team gets 157
-      if (team === 1) { setScore(1, 157); }
-      else { setScore(2, 157); }
+      if (team === 1) {
+        document.getElementById('score1').value = 257;
+        document.getElementById('score2').value = 0;
+      } else {
+        document.getElementById('score2').value = 257;
+        document.getElementById('score1').value = 0;
+      }
     }
     document.getElementById('match1-btn').classList.toggle('active', state.matchTeam === 1);
     document.getElementById('match2-btn').classList.toggle('active', state.matchTeam === 2);
