@@ -703,7 +703,7 @@
 <body>
 <div class="app">
   <header>
-    <div class="logo">Jass<span>tafel</span> <small style="font-size:0.28em;font-weight:400;color:var(--cream-dim);vertical-align:middle;">(v1.1)</small></div>
+    <div class="logo">Jass<span>tafel</span> <small id="app-version" style="font-size:0.28em;font-weight:400;color:var(--cream-dim);vertical-align:middle;"></small></div>
     <div class="subtitle">Schweizer Kartenspiel</div>
     <div class="suits">♠ ♥ ♦ ♣</div>
   </header>
@@ -1131,9 +1131,18 @@
     }
   }
 
-  // ── SERVICE WORKER ──
+  // ── SERVICE WORKER + VERSION ──
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    navigator.serviceWorker.register('sw.js').then(() => {
+      // Read version from cache name (e.g. "jasstafel-v1.2" → "v1.2")
+      caches.keys().then(keys => {
+        const jassCache = keys.find(k => k.startsWith('jasstafel-'));
+        if (jassCache) {
+          const version = jassCache.replace('jasstafel-', '');
+          document.getElementById('app-version').textContent = `(${version})`;
+        }
+      });
+    });
   }
 </script>
 </body>

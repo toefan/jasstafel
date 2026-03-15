@@ -1,4 +1,5 @@
-const CACHE = 'jasstafel-v1.2';
+const VERSION = 'v1.2';
+const CACHE = `jasstafel-${VERSION}`;
 const ASSETS = [
   './',
   './index.html',
