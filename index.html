@@ -877,10 +877,12 @@
     try {
       const parsed = JSON.parse(saved);
       state = { ...state, ...parsed };
-      if (state.scores && state.scores.length >= 0 && state.team1) {
-        startGame(true);
-      }
     } catch(e) {}
+  }
+
+  // Always start on setup screen, show resume button if game exists
+  if (state.scores && state.scores.length > 0) {
+    document.getElementById('resume-btn').style.display = 'block';
   }
 
   function saveState() {
